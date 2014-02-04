@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Speech.Synthesis;
 
 namespace SpeechTest
 {
@@ -9,12 +11,9 @@ namespace SpeechTest
             var options = new Options();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
-                if (options.Language != null && options.Speak != null)
-                {
-                    var syn = new System.Speech.Synthesis.SpeechSynthesizer();
-                    syn.SelectVoice(String.Format("Microsoft Server Speech Text to Speech Voice ({0})", options.Language));
-                    syn.Speak(options.Speak);
-                }
+                var syn = new SpeechSynthesizer();
+                syn.SelectVoiceByHints(options.Gender, options.Age, 0, new CultureInfo(options.Culture));
+                syn.Speak(options.Talk);
             }
         }
     }
